@@ -1,0 +1,161 @@
+#include<iostream>
+using namespace std;
+
+class treeNode {
+    
+private:
+    int * info;
+    treeNode* left;
+    treeNode* right;
+    
+public:
+    treeNode() {
+        
+        this->info = NULL;
+        this->left = this->right = NULL;
+    }
+    
+    treeNode(int * info) {
+        
+        this->info = info;
+        this->left = this->right = NULL;
+    }
+    
+    int * getInfo() {
+        
+        return this->info;
+    }
+    
+    void setInfo(int * info) {
+        
+        this->info = info;
+    }
+    
+    void setLeft(treeNode * left) {
+        
+        this->left = left;
+    }
+    
+    void setRight(treeNode * right) {
+        
+        this->right = right;
+    }
+    
+    treeNode * getLeft() {
+        
+        return this->left;
+    }
+    
+    treeNode * getRight() {
+        
+        return this->right;
+        
+    }
+    
+};
+
+void insert(treeNode * root, int * info) {
+    
+    treeNode * node = new treeNode(info);
+    treeNode *p, *q;
+    
+    p = q = root;
+    while (*info != *(p->getInfo()) && q!=NULL) {
+        
+        p = q;
+        
+        if(*info < *(p->getInfo()))
+            q = p->getLeft();
+        
+        else
+            q = p->getRight();
+    }
+    
+    if(*info == *p->getInfo()) {
+        
+        cout << "attempt to insert duplicate\n";
+        delete node;
+    }
+    
+    else if (*info<*p->getInfo()) {
+
+        p->setLeft(node);
+    }
+    
+    else {
+        p->setRight(node);
+    }
+    
+}
+
+void inOrderTraversal(treeNode * root)
+{
+    //  LEFT ROOT RIGHT
+    
+    if(root == NULL)
+    {
+        return;
+    }
+    else
+    {
+        inOrderTraversal(root->getLeft());
+        cout << *root->getInfo() << " ";
+        inOrderTraversal(root->getRight());
+    }
+
+}
+
+void PreOrderTraversal(treeNode * root)
+{
+    //   ROOT LEFT RIGHT
+    
+    if(root == NULL)
+    {
+        return;
+    }
+    else
+    {
+        cout << *root->getInfo() << " ";
+        PreOrderTraversal(root->getLeft());
+        PreOrderTraversal(root->getRight());
+    }
+
+}
+
+void PostOrderTraversal(treeNode * root)
+{
+    //  LEFT RIGHT NODE
+    
+    if(root == NULL)
+    {
+        return;
+    }
+    else
+    {
+        PostOrderTraversal(root->getLeft());
+        PostOrderTraversal(root->getRight());
+        cout << *root->getInfo() << " ";
+    }
+
+}
+
+
+int main() {
+    
+    int x[] = { 14, 15, 4, 9, 7, 18, 3, 5, 16, 4, 20, 17, 9, 5, -1};
+    
+    treeNode * root = new treeNode;
+    root->setInfo(&x[0]);
+    
+    for(int i = 1; x[i] > 0; i++) {
+        insert(root, &x[i]);
+    }
+    
+    inOrderTraversal(root);
+    PreOrderTraversal(root);
+    PostOrderTraversal(root);
+    
+    cout << endl;
+    return 0;
+    
+}
